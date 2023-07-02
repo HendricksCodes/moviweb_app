@@ -1,5 +1,5 @@
 import json
-from data_manager_interface import DataManagerInterface
+from datamanager.data_manager_interface import DataManagerInterface
 
 
 class JSONDataManager(DataManagerInterface):
@@ -17,7 +17,7 @@ class JSONDataManager(DataManagerInterface):
             json.dump(self.data, file, indent=2)
 
     def get_all_users(self):
-        return self.data
+        return [user['name'] for user in self.data]
 
     def get_user_movies(self, user_id):
         for user in self.data:
