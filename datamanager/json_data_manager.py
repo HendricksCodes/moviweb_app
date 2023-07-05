@@ -1,23 +1,23 @@
 import json
-from datamanager.data_manager_interface import DataManagerInterface
+from .data_manager_interface import DataManagerInterface
 
 
 class JSONDataManager(DataManagerInterface):
-    def __init__(self, filename):
-        self.filename = filename
+    def __init__(self, json_file):
+        self.json_file = json_file
         self.data = self.load_data()
 
     def load_data(self):
-        with open(self.filename, 'r') as file:
+        with open(self.json_file, 'r') as file:
             data = json.load(file)
         return data
 
     def save_data(self):
-        with open(self.filename, 'w') as file:
+        with open(self.json_file, 'w') as file:
             json.dump(self.data, file, indent=2)
 
     def get_all_users(self):
-        return [user['name'] for user in self.data]
+        return self.data
 
     def get_user_movies(self, user_id):
         for user in self.data:
@@ -76,17 +76,3 @@ class JSONDataManager(DataManagerInterface):
                     self.save_data()
                     return True
         return False
-
-    def get_user_by_id(self, user_id):
-        for user in self.data:
-            if user['id'] == user_id:
-                return user
-        return None
-
-    def get_movie_by_id(self, user_id, movie_id):
-        user = self.get_user_by_id(user_id)
-        if user:
-            for movie in user['movies']:
-                if movie['id'] == movie_id:
-                    return movie
-        return None
