@@ -23,5 +23,20 @@
     "id": 2,
     "name": "Bob",
     "movies": []
+  },
+  {
+    "id": 3,
+    "name": "Nathan",
+    "movies": []
+  },
+  {
+    "id": 4,
+    "name": "Jaime",
+    "movies": []
+  },
+  {
+    "id": 5,
+    "name": "Jayson",
+    "movies": []
   }
 ]

@@ -37,19 +37,22 @@ class JSONDataManager(DataManagerInterface):
         return user_id
 
     def add_movie(self, user_id, name, director, year, rating):
-        user = self.get_user_by_id(user_id)
-        if user:
-            movie_id = max(movie['id'] for movie in user['movies']) + 1 if user['movies'] else 1
-            movie = {
-                'id': movie_id,
-                'name': name,
-                'director': director,
-                'year': year,
-                'rating': rating
-            }
-            user['movies'].append(movie)
-            self.save_data()
-            return movie_id
+        for user in self.data:
+            if user['id'] == user_id:
+                movies = user.get('movies')
+                movie_id = max(movie['id'] for movie in movies) + 1 if movies else 1
+                movie = {
+                    'id': movie_id,
+                    'name': name,
+                    'director': director,
+                    'year': year,
+                    'rating': rating
+                }
+                movies.append(movie)
+                self.save_data()
+                return movie_id
+
+        print(f"User with ID {user_id} not found.")
         return None
 
     def update_movie(self, user_id, movie_id, name=None, director=None, year=None, rating=None):
@@ -76,3 +79,17 @@ class JSONDataManager(DataManagerInterface):
                     self.save_data()
                     return True
         return False
+
+    def get_user_by_id(self, user_id):
+        for user in self.data:
+            if user['id'] == user_id:
+                return user
+        return None
+
+    def get_movie_by_id(self, user_id, movie_id):
+        user = self.get_user_by_id(user_id)
+        if user:
+            for movie in user['movies']:
+                if movie['id'] == movie_id:
+                    return movie
+        return None
